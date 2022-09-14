@@ -1,21 +1,11 @@
-const { body, validationResult } = require('express-validator');
-const { re_password, re_email, genderEnum, roleEnum } =require('../../constant/userConstant')
+const { body } = require('express-validator');
 const mongoose = require("mongoose");
 
 
-
-const validate = validations => {
-    return async(req, res, next) => {
-        for (let validation of validations){
-            await validation.run(req);
-        }
-        const errors = validationResult(req);
-        if (errors.isEmpty()){
-            return next()
-        }
-        res.status(400).json({ errors: errors.array() });
-    };
-};
+const { genderEnum, roleEnum, addressEnum, provinceEnum } =require('../../constant/userConstant')
+const {re_password, re_email} = require("../../constant/authConstant")
+const validate = require('../../utils/validate');
+const { json } = require('express');
 
 
 
@@ -34,18 +24,18 @@ const signup_validator = validate(
         body("email").custom(
             async value => {
                 if (!value){
-                    throw new Error("Email required")
+                    throw new Error("Email is required field")
                 }
                 else if (!re_email.test(value)){
                     throw  new Error("Invalid Email address")
                 }
-                const emailcount = await mongoose.models.users.countDocuments({email: value});
+                const emailcount = await mongoose.models.User.countDocuments({email: value});
                 if (emailcount){
                     throw new Error("Email already exist")
                 }
                 return true
             }),
-        body("first_name").exists(),
+        body("name").exists().withMessage('Name is required Field'),
         body("gender").custom(
             value => {
                 if (!value){
@@ -57,7 +47,29 @@ const signup_validator = validate(
                 return true
             }
         ),
-        body("date_of_birth").exists(),
+        body("date_of_birth").exists().withMessage('Date of Birth is required Field'),
+        body("address").custom(
+            address => {
+                errors = []
+                for (key of addressEnum){
+                    if (!Object.keys(address).includes(key)){
+                        let tempObj = {}
+                        tempObj[key] = `${key} is required field`
+                        errors.push(tempObj)
+                    }
+                }
+                if (address["province"]){
+                    if (!provinceEnum.includes(address["province"].toLowerCase())){
+                        errors.push({"province": 'Invalid Province'})
+                    }
+                }
+                if (errors.length != 0){
+                    throw new Error(JSON.stringify(errors))
+                }
+                return true
+            }
+        ),
+        // body("address").exists().withMessage('Address is required Field'),
         body("role").custom(
             value => {
                 if (!value){
@@ -75,12 +87,16 @@ const signup_validator = validate(
 const login_validator = validate(
     [
         body("email").custom(
-            value => {
+            async value => {
                 if (!value){
                     throw new Error("Email required")
                 }
-                else if (!re_email.test(value)){
+                if (!re_email.test(value)){
                     throw  new Error("Invalid Email address")
+                }
+                const emailcount = await mongoose.models.User.countDocuments({email: value});
+                if(!emailcount){
+                    throw new Error("User doesn't exist")
                 }
                 return true
             }),

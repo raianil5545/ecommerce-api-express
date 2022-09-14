@@ -1,18 +1,13 @@
 const express = require("express");
-const mongoose = require('mongoose');
 require("dotenv").config()
 
-const app = express();
 
+
+require('./config/db_connection')
 const user_router = require("./router/users")
 const buyer_router = require("./router/buyers")
 
-mongoose.connect('mongodb://localhost:27017/ecommerce').
-then(() => {
-        console.log("db connected")
-    }).catch((err) => {
-        console.log(err)
-    })
+const app = express();
 
 app.use(express.json());
 

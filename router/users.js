@@ -1,7 +1,7 @@
 const express = require("express")
 
 const { register } = require("../controllers/users/register")
-const { signup_validator, login_validator } = require("../middleware/validators/user_validators")
+const { signup_validator, login_validator } = require("../middleware/validators/auth")
 const { login } = require("../controllers/users/login")
 
 

@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema;
 
-let genderEnum = ["male", "female"];
-
+const { genderEnum, roleEnum, provinceEnum } = require("../constant/userConstant")
 // var validateEmail = function(email) {
 //     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 //     return re.test(email)
@@ -14,15 +13,9 @@ let genderEnum = ["male", "female"];
 // }
 
 const userSchema = new schema({
-    first_name: {
+    name: {
         type: String,
-        required: [true, "First Name is required field"]
-    },
-    middle_name: {
-        type: String
-    },
-    last_name: {
-        type: String
+        required: true
     },
     email: {
         type: String,
@@ -30,29 +23,48 @@ const userSchema = new schema({
         lowercase: true,
         // validate: [validateEmail, 'Invalid email address'],
         unique: true,
-        // required: [true, "Email address is required field"]
+        required: true
     },
     date_of_birth: {
         type: Date,
-        // required: true
+        required: true
     },
     gender: {
         type: String,
         lowercase: true,
         // validate: [validateGender, "male or female only"],
         enum: genderEnum,
-        // required: [true, "gender is required field"]
+        required: true
     },
     password: {
         type: String,
-        select: false
-        // required: [true, "password is required field"],
+        select: false,
+        required: true
         // validate: [validatePassword, "Must be 8 atleast 8 character long and contain atleast a digit, number, upper case and lowercase"]
+    },
+    address: {
+        street: {
+            type: String,
+            lowercase: true,
+            required: [true, "street is required field"]
+        },
+        city: {
+            type: String, 
+            lowercase: true,
+            required: [true, "city is required field"]
+        },
+        province: {
+            type: String,
+            enum: provinceEnum,
+            lowercase: true,
+            required: [true, "province is required field"]
+        }
     }, 
     role: {
         type: String,
         lowercase: true,
-        enum: ["buyer", "seller"]
+        enum: roleEnum,
+        required: true
     }
 }, {strict: true});
 
@@ -61,6 +73,6 @@ const userSchema = new schema({
 //     return !emailcount
 // }, "Email already exists")
 
-const userModel = mongoose.model('users', userSchema);
+const userModel = mongoose.model('User', userSchema);
 
 module.exports = userModel;

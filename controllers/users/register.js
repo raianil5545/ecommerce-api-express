@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const User  = require("../../models/users/users");
+const User  = require("../../model/User");
 
 const register = (req, res, next) => {
         try{
