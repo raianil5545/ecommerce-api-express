@@ -1,9 +1,9 @@
 const express = require("express");
+
+
 const product_validator = require("../middleware/validators/products")
-
-
 const { auth_middleware } = require("../middleware/auth_middleware")
-const { get_products, create_products } = require("../controllers/product")
+const { get_products, create_products } = require("../controllers/users/product")
 
 product_router = express.Router()
 

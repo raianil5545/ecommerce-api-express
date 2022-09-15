@@ -1,4 +1,4 @@
-const Product  = require("../model/Product");
+const Product  = require("../../model/Product");
 
 const get_products = async (req, res, next) => {
     try{
@@ -28,7 +28,7 @@ const create_products = async (req, res, next) => {
         
     }
     else{
-        res.status(403).send({data: "Forbidden"})
+        res.status(403).send({msg: "Forbidden"})
     }
 }
 

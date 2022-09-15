@@ -10,6 +10,7 @@ require("dotenv").config()
 require('./config/db_connection')
 const auth_router = require("./router/auth")
 const product_router = require("./router/product")
+const order_router = require("./router/order")
 
 const options = {
     uploadDir: "./uploads",
@@ -35,6 +36,9 @@ app.use("/api", auth_router)
 
 // products endpoint
 app.use("/api", product_router)
+
+// order end points
+app.use("/api", order_router)
 
 // app.use(formData.parse(options));
 

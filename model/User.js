@@ -65,6 +65,10 @@ const userSchema = new schema({
         lowercase: true,
         enum: roleEnum,
         required: true
+    },
+    is_active: {
+        type: Boolean,
+        default: true
     }
 }, {strict: true});
 

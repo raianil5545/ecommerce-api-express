@@ -1,9 +1,9 @@
-const moongose = required("moongose");
+const mongoose = require("mongoose");
 
 const { orderStatusEnum } = require("../constant/orderCostant")
 
 
-const Schema = moongose.Schema;
+const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 
@@ -12,17 +12,17 @@ const OrderSchema = new Schema({
         {
             name: {
                 type: String,
-                required: true
+                required: [true, "Missing Product Name"]
             },
             price: {
                 type: Number,
                 min: 0,
-                required: true
+                required: [true, "Missing Price"]
             },
             quantity: {
                 type: Number,
                 min: 1,
-                required: true
+                required: [true, "Missing Quantity"]
             },
             status: {
                 type: String,
@@ -40,6 +40,6 @@ const OrderSchema = new Schema({
     timestamps: true
 })
 
-orderModel = moongose.model("Order", OrderSchema)
+orderModel = mongoose.model("Order", OrderSchema)
 
 module.exports = orderModel
