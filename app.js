@@ -1,15 +1,27 @@
 const express = require("express");
+// const formData = require('express-form-data');
+const multer  = require('multer')
+
+
 require("dotenv").config()
 
 
 
 require('./config/db_connection')
-const user_router = require("./router/users")
-const buyer_router = require("./router/buyers")
+const auth_router = require("./router/auth")
+const product_router = require("./router/product")
+
+const options = {
+    uploadDir: "./uploads",
+  };
+const upload = multer({ dest: './uploads' })
+
 
 const app = express();
 
 app.use(express.json());
+
+app.use(upload.array("images", 5))
 
 
 app.get("/", (req, res) => {
@@ -19,13 +31,17 @@ app.get("/", (req, res) => {
 })
 
 // signup end point
-app.use("/api", user_router)
+app.use("/api", auth_router)
 
-// login end point
-app.use("/api", user_router)
+// products endpoint
+app.use("/api", product_router)
 
-// buyers endpoint
-app.use("/api", buyer_router)
+// app.use(formData.parse(options));
+
+// app.post('/profile', upload.single('uploaded_file'), (req, res) => {
+//     console.log(req.file)
+//     res.send("got file")
+// })
 
 //error handler
 app.use((err, req, res, next) => {

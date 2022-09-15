@@ -1,7 +1,6 @@
-const { model } = require('mongoose');
-const moongose = require('moongose');
+const mongoose = require('mongoose');
 
-const Schema = moongose.Schema;
+const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const productSchema = new Schema({
@@ -38,6 +37,5 @@ const productSchema = new Schema({
         timestamps: true
 })
 
-
-
-model.exports = moongose.model("Product", productSchema)
+const productModel = mongoose.model("Product", productSchema)
+module.exports = productModel
