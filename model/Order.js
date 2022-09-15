@@ -1,9 +1,9 @@
-const mongose = required("mongose");
+const moongose = required("moongose");
 
 const { orderStatusEnum } = require("../constant/orderCostant")
 
 
-const Schema = mongoose.Schema;
+const Schema = moongose.Schema;
 const ObjectId = Schema.ObjectId;
 
 
@@ -40,4 +40,6 @@ const OrderSchema = new Schema({
     timestamps: true
 })
 
-module.exports = mongose.model("Order", OrderSchema)
+orderModel = moongose.model("Order", OrderSchema)
+
+module.exports = orderModel

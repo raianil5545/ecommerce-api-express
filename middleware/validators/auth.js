@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 const { genderEnum, roleEnum, addressEnum, provinceEnum } =require('../../constant/userConstant')
 const {re_password, re_email} = require("../../constant/authConstant")
 const validate = require('../../utils/validate');
-const { json } = require('express');
-
 
 
 const signup_validator = validate(

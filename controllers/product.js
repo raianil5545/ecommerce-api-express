@@ -1,6 +1,4 @@
 const Product  = require("../model/Product");
-const fs = require('fs');
-
 
 const get_products = async (req, res, next) => {
     try{
@@ -21,8 +19,7 @@ const get_products = async (req, res, next) => {
 const create_products = async (req, res, next) => {
     if (req.role == "seller"){
         try{
-            console.log(req.file)
-            let product_created = await Product.create({...req.body, created_by: req.userID, images: req.files})
+            await Product.create({...req.body, created_by: req.userID, images: req?.files})
             res.send({data: "product created sucessfully"})
         }
         catch (err){
