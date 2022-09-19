@@ -10,8 +10,7 @@ const auth_middleware =  (req, res, next) => {
             if (err) {
                 return next(err)
             }
-            req["userID"] = decoded.id
-            req["role"] = decoded.role
+            req["user"] = {"id": decoded.id, "role":decoded.role}
             next()
           });
     }

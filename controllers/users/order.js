@@ -3,8 +3,8 @@ const Order = require('../../model/Order')
 
 const showOrder = async (req, res, next) => {
     try{
-        if (req.role == "buyer"){
-            let orders = await Order.find({created_by: req.userID})
+        if (req.user.role == "buyer"){
+            let orders = await Order.find({created_by: req.user.id})
             res.send(orders)
         }
         else {
@@ -19,8 +19,8 @@ const showOrder = async (req, res, next) => {
 
 const createOrder = async (req, res, next) => {
     try {
-        if (req.role == "buyer"){
-            let order = await Order.create({...req.body, created_by: req.userID})
+        if (req.user.role == "buyer"){
+            let order = await Order.create({...req.body, created_by: req.user.id})
             res.send({msg: "order submitted sucessfully"})
         }
         else{
