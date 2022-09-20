@@ -3,24 +3,13 @@ const mongoose = require("mongoose")
 
 
 const get_products = async (req, res, next) => {
-    // try{
-    //     if (req.role == "seller"){
-    //         // if seller sends only seller data for that products
-    //         let products = await Product.find({created_by: req.userID})
-    //         res.send(products)
-    //     }
-    //     else {
-    //         let products =  await Product.find({})
-    //         res.send(products)
-    //     }
-    // }
-    // catch(err){
-    //     next(err)
-    // }
-
+    
     let search_term = req.query.search_term;
     let page = req.query.page || 1;
     let per_page = req.query.per_page || 5;
+
+    let price_from = parseFloat(req.query.price_from) || 0;
+    let price_to = parseFloat(req.query.price_to) || 1E9;
 
     let products = await Product.aggregate([
         {
@@ -41,6 +30,14 @@ const get_products = async (req, res, next) => {
                     { name: { $regex: RegExp(search_term, "i") } },
                     { brands: { $regex: RegExp(search_term, "i") } },
                     { categories: { $regex: RegExp(search_term, "i") } },
+                ],
+                $and: [
+                    {
+                        price: { $gte: price_from }
+                    },
+                    {
+                        price: { $lte: price_to }
+                    }
                 ]
             }
         }, {

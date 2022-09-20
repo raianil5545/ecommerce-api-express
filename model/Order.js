@@ -24,6 +24,11 @@ const OrderSchema = new Schema({
                 min: 1,
                 required: [true, "Missing Quantity"]
             },
+            product_id: {
+                type: ObjectId,
+                ref: "Product",
+                required: true
+            },
             status: {
                 type: String,
                 enum: orderStatusEnum,
